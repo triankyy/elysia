@@ -4,22 +4,12 @@ import { swagger } from "@elysiajs/swagger";
 import { Elysia } from "elysia";
 import { authRoute } from "./modules/auth/route";
 import { userRoute } from "./modules/user/route";
+import { swaggerPlugin } from "./plugins/swagger";
 
 const app = new Elysia()
     .use(cookie())
     .use(cors())
-    .use(
-        swagger({
-            path: "/docs",
-            exclude: ["/docs", "/docs/json"],
-            documentation: {
-                info: {
-                    title: "Elysia Documentation",
-                    version: "1.0.0",
-                },
-            },
-        })
-    )
+    .use(swaggerPlugin())
     .onAfterHandle(function ({ set, response, path }) {
         if (path != "/docs") {
             const data = response as object;
